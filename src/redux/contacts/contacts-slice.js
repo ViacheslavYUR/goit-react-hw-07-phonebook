@@ -42,9 +42,7 @@ const contactsSlice = createSlice({
       })
       .addCase(fetchDeleteContact.fulfilled, (state, { payload }) => {
         state.loading = false;
-
-        const index = state.items.findIndex(item => item.id === payload);
-        state.items.slice(index, 1);
+        state.items = state.items.filter(item => item.id !== payload);
       })
       .addCase(fetchDeleteContact.rejected, (state, { payload }) => {
         state.loading = false;
@@ -52,5 +50,4 @@ const contactsSlice = createSlice({
       });
   },
 });
-
 export default contactsSlice.reducer;

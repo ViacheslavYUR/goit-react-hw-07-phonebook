@@ -17,16 +17,15 @@ import css from './phone-book.module.css';
 const Phonebook = () => {
   const filteredContacts = useSelector(getFilterContact);
   const filter = useSelector(getFilter);
-  console.log(filteredContacts);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchAllContacts());
   }, [dispatch]);
 
-  const handleAddContact = data => {
-    console.log(data);
-    dispatch(fetchAddContact(data));
+  const handleAddContact = ({ name, phone }) => {
+    // console.log({name, phone}); - тут отримую об'єкт
+    dispatch(fetchAddContact({ name, phone }));
   };
 
   const removeContact = id => {

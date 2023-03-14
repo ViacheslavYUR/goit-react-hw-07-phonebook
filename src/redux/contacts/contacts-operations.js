@@ -11,35 +11,37 @@ export const fetchAllContacts = createAsyncThunk('contacts/fetch-all', async (_,
 });
 
 export const fetchAddContact = createAsyncThunk(
-  'contacts/add',
-  async (data, thunkAPI) => {
+  'contacts/addContact',
+  async (data, { rejectWithValue }) => {
     console.log(data);
     try {
       const result = await api.addContact(data);
       return result;
     } catch ({ response }) {
-      return thunkAPI.rejectWithValue(response.data);
+      return rejectWithValue(response.data);
     }
-  },
-  {
-    condition: ({ name, phone }, { getState }) => {
-      const { contacts } = getState;
-      const normalizedName = name.toLocaleLowerCase();
-      const normalizedNumber = phone.toLocaleLowerCase();
-      const findContact = contacts.items.find(({ name, phone }) => {
-        return name.toLocaleLowerCase() === normalizedName && phone.toLocaleLowerCase() === normalizedNumber;
-      });
-      if (findContact) {
-        alert(`This contact ${name} or ${phone} is already in contacts`);
-        return false;
-      }
-    },
   }
+  // {
+  //   condition: (data, { getState }) => {
+  //     console.log(getState);
+  //     const { contacts } = getState;
+  //     const normalizedName = data.name.toLocaleLowerCase();
+  //     const normalizedNumber = data.phone.toLocaleLowerCase();
+  //     const findContact = contacts.items.find(({ name, phone }) => {
+  //       return name.toLocaleLowerCase() === normalizedName && phone.toLocaleLowerCase() === normalizedNumber;
+  //     });
+  //     // if (findContact) {
+  //     //   // alert(`This contact ${name} or ${phone} is already in contacts`);
+  //     //   return false;
+  //     // }
+  //   },
+  // }
 );
 
-export const fetchDeleteContact = createAsyncThunk('contacts/delete', async (id, thunkAPI) => {
+export const fetchDeleteContact = createAsyncThunk('contacts/deleteContact', async (id, thunkAPI) => {
   try {
     await api.deleteContact(id);
+    // console.log(id);
     return id;
   } catch ({ response }) {
     return thunkAPI.rejectWithValue(response.data);

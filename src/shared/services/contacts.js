@@ -10,6 +10,7 @@ export const getAllContacts = async () => {
 };
 
 export const addContact = async data => {
+  console.log(data);
   const { data: result } = await contactsIstance.post('/', data);
   console.log(result);
   return result;
@@ -17,5 +18,7 @@ export const addContact = async data => {
 
 export const deleteContact = async id => {
   const { data } = await contactsIstance.delete(`/${id}`);
+  // console.log(data);
+
   return data;
 };
