@@ -1,11 +1,11 @@
+import React from 'react';
+// import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { addContact, deleteContact } from 'redux/contacts/contacts-slice';
+import { fetchAllContacts, fetchAddContact, fetchDeleteContact } from 'redux/contacts/contacts-operations';
 import { setFilter } from 'redux/filter/filter-slice';
-import {
-  getAllContacts,
-  getFilterContact,
-} from 'redux/contacts/contacts-selector';
+import { getFilterContact } from 'redux/contacts/contacts-selector';
 import { getFilter } from 'redux/filter/filter-selector';
 
 import ContactForm from './ContactForm/ContactForm';
@@ -17,32 +17,20 @@ import css from './phone-book.module.css';
 const Phonebook = () => {
   const filteredContacts = useSelector(getFilterContact);
   const filter = useSelector(getFilter);
-  const allContacts = useSelector(getAllContacts);
-
+  console.log(filteredContacts);
   const dispatch = useDispatch();
 
-  const handleAddContact = ({ name, number }) => {
-    if (isDublicate(name, number)) {
-      return alert(`This contact ${name} or ${number} is already in contacts`);
-    }
-    const action = addContact({ name, number });
-    dispatch(action);
+  useEffect(() => {
+    dispatch(fetchAllContacts());
+  }, [dispatch]);
+
+  const handleAddContact = data => {
+    console.log(data);
+    dispatch(fetchAddContact(data));
   };
 
   const removeContact = id => {
-    dispatch(deleteContact(id));
-  };
-
-  const isDublicate = (name, number) => {
-    const normalizedName = name.toLocaleLowerCase();
-    const normalizedNumber = number.toLocaleLowerCase();
-    const findContact = allContacts.find(({ name, number }) => {
-      return (
-        name.toLocaleLowerCase() === normalizedName ||
-        number.toLocaleLowerCase() === normalizedNumber
-      );
-    });
-    return Boolean(findContact);
+    dispatch(fetchDeleteContact(id));
   };
 
   const handleFilter = ({ target }) => {

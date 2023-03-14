@@ -1,22 +1,16 @@
 import React from 'react';
-import { nanoid } from 'nanoid';
-
 import PropTypes from 'prop-types';
 
 import css from './contactList.module.css';
 
 const ContactList = ({ contacts, removeContact }) => {
-  const elements = contacts.map(({ id, name, number }) => {
+  const elements = contacts.map(({ id, name, phone }) => {
     return (
-      <li key={nanoid()}>
+      <li key={id}>
         <p className={css.contact}>
-          {name}: {number}
+          {name}: {phone}
         </p>
-        <button
-          className={css.btn}
-          type="button"
-          onClick={() => removeContact(id)}
-        >
+        <button className={css.btn} type="button" onClick={() => removeContact(id)}>
           Delete
         </button>
       </li>
@@ -35,7 +29,7 @@ ContactList.propTypes = {
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
+      phone: PropTypes.string.isRequired,
     })
   ),
   removeContact: PropTypes.func.isRequired,
